@@ -2,6 +2,7 @@ const std = @import("std");
 const task = @import("task.zig");
 const queue = @import("../data-structures/queue.zig");
 const linked_list = @import("../data-structures/linked-list.zig");
+const cryption = @import("../encrypt-decrypt/cryption.zig");
 
 pub const ProcessManagement = struct {
     task_queue: queue.Queue(*task.Task),
@@ -27,6 +28,7 @@ pub const ProcessManagement = struct {
                 const task_to_execute = node.data;
                 const task_str = try task_to_execute.toString(self.allocator);
                 std.debug.print("executing task : {s}\r\n", .{task_str});
+                cryption.executeCryption(task_str);
                 self.allocator.destroy(node);
             }
         }
