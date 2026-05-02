@@ -5,7 +5,7 @@ pub const IO = struct {
 
     pub fn init(io: std.Io, file_path: []const u8) !IO {
         const cwd = std.Io.Dir.cwd();
-        const file = try cwd.openFile(io, file_path, .{});
+        const file = try cwd.openFile(io, file_path, .{ .mode = .read_write });
 
         return IO{ .file = file };
     }

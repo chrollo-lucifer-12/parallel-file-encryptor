@@ -36,9 +36,9 @@ pub fn fromString(task_data: []const u8, io: std.Io) !Task {
     const part2 = it.next() orelse return error.InvalidFormat;
 
     const action = if (std.mem.eql(u8, part2, "ENCRYPT"))
-        Action.encrypt
+        Action.ENCRYPT
     else if (std.mem.eql(u8, part2, "DECRYPT"))
-        Action.decrypt
+        Action.DECRYPT
     else
         return error.InvalidAction;
 
