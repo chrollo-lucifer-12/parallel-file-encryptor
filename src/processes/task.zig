@@ -16,6 +16,18 @@ pub const Task = struct {
         self.file.close(io);
     }
 
+    pub fn toString(self: *Task, allocator: std.mem.Allocator) ![]u8 {
+        const action_str = switch (self.action) {
+            Action.ENCRYPT => "ENCRYPT",
+            Action.DECRYPT => "DECRYPT",
+        };
+
+        return try std.fmt.allocPrint(allocator, "{s},{s}", .{
+            self.file_path,
+            action_str,
+        });
+    }
+
     pub fn fromString(task_data: []const u8, io: std.Io) !Task {
         var it = std.mem.splitScalar(u8, task_data, ',');
 

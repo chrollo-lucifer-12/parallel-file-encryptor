@@ -9,7 +9,7 @@ pub fn Queue(comptime T: type) type {
         list: List = .{},
 
         pub fn enqueue(self: *@This(), node: *NodeT) void {
-            self.list.pushToFront(node);
+            self.list.pushToBack(node);
         }
 
         pub fn dequeue(self: *@This()) ?*NodeT {

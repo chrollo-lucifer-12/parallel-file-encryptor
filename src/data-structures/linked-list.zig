@@ -16,20 +16,33 @@ pub fn LinkedList(comptime T: type) type {
 
     return struct {
         head: ?*NodeT = null,
+        tail: ?*NodeT = null,
 
         pub fn pushToFront(self: *@This(), node: *NodeT) void {
             node.next = self.head;
             self.head = node;
         }
 
-        pub fn removeFromFront(self: *@This()) ?T {
+        pub fn pushToBack(self: *@This(), node: *NodeT) void {
+            node.next = null;
+
+            if (self.tail) |tail| {
+                tail.next = node;
+            } else {
+                self.head = node;
+            }
+
+            self.tail = node;
+        }
+
+        pub fn removeFromFront(self: *@This()) ?*NodeT {
             if (self.head == null) {
                 return null;
             }
             const prevHead = self.head.?;
             self.head = prevHead.next;
 
-            return prevHead.data;
+            return prevHead;
         }
     };
 }
