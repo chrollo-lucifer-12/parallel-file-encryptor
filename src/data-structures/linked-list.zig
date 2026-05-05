@@ -21,6 +21,9 @@ pub fn LinkedList(comptime T: type) type {
         pub fn pushToFront(self: *@This(), node: *NodeT) void {
             node.next = self.head;
             self.head = node;
+            if (self.tail == null) {
+                self.tail = node;
+            }
         }
 
         pub fn pushToBack(self: *@This(), node: *NodeT) void {
@@ -36,13 +39,15 @@ pub fn LinkedList(comptime T: type) type {
         }
 
         pub fn removeFromFront(self: *@This()) ?*NodeT {
-            if (self.head == null) {
-                return null;
-            }
-            const prevHead = self.head.?;
-            self.head = prevHead.next;
+            const node = self.head orelse return null;
 
-            return prevHead;
+            self.head = node.next;
+
+            if (self.head == null) {
+                self.tail = null;
+            }
+
+            return node;
         }
     };
 }

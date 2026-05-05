@@ -19,6 +19,8 @@ pub const ProcessManagement = struct {
 
         node.* = NodeT.init(newTask);
 
+        std.debug.print("new task came {s}\n", .{newTask.file_path});
+
         self.task_queue.enqueue(node);
     }
 
@@ -26,8 +28,13 @@ pub const ProcessManagement = struct {
         while (self.task_queue.isEmpty() == false) {
             if (self.task_queue.dequeue()) |node| {
                 var task_to_execute = node.data;
+                defer self.allocator.free(task_to_execute.file_path);
+
                 const task_str = try task_to_execute.toString(self.allocator);
+                defer self.allocator.free(task_str);
+
                 std.debug.print("executing task : {s}\r\n", .{task_str});
+
                 try cryption.executeCryption(task_str, io, secret_key);
                 self.allocator.destroy(node);
             }
